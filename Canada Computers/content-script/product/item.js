@@ -15,7 +15,6 @@ $(document).ready(function(){
     
     $("#results div.row:eq(1)").append("<button title='Add this product in CSV' type='button' class='addlink'>Add Links</button>");
     $('.addlink').on("click", addlinks);
-
 //constom
     //$("#results div.row:eq(1)").append("<button title='Add In CSV' type='button' class='addincsv'>Add In CSV</button>"); //class='feedback-unopened btn btn-info rounded-0'
     //$('.addincsv').on("click", addincsv);
@@ -29,34 +28,34 @@ $(document).ready(function(){
         $.each(all_lists,function(key,level_2_){
             var check_e = $(level_2_).find(".importlink");
             if(check_e.length!==1){
-                 var buttonId = "#importlink_"+key;
-                var button = "<button title='Add this product in CSV' type='button' class='importlink' id='importlink_"+key+"''>+</button>";
-                $(level_2_).append(button);
-                 $(buttonId).on("click", importdata);
+                $(level_2_).append("<button title='Add this product in CSV' type='button' class='importlink'>Add</button>");
             }
         });
-        //$('.importlink').on("click", importdata);
+        $('.importlink').on("click", importdata);
     }
 
 
 //costom
     function addincsv(){
         var hrefArray = new Array();
-        var all_lists = $(".importlink");
+        var all_lists = $(".productImageSearch");
         $.each(all_lists,function(key,level_2_){
-            var buttonId = "#importlink_"+key;
-console.log(buttonId);
-            if($(buttonId)){
-                $(buttonId).dispatchEvent(new Event("click"));
-            }
-
+           var check_e = $(level_2_).find("a").attr("href");
+            hrefArray[key] = check_e;
         }); 
 
-        console.log("okk");
+     $.each(hrefArray,function(key,product){
+           importdatacustom(product);
+
+        });
+
     }
 
 
  function importdatacustom(event) {
+
+    console.log(event);
+
         document.getElementById("loader").style.display = "block";
         var amazon_bulk_array = [];
         var amazon_array = {};
@@ -72,7 +71,6 @@ console.log(buttonId);
 
         var target = event //event.target;
         var pro_url = $(target).prev('a').attr("href");
-        console.log(pro_url);
         var code_tab_sec = $(target).prev('a');
         var code_tab = $(code_tab_sec).find('small span').text();
         var code_1 =  $.trim(code_tab.replace('Item Code:',''));
@@ -91,9 +89,6 @@ console.log(buttonId);
             inventory = 0;
         }
         $.get(pro_url,function(data){
-        
-        console.log(data);
-
             var product_title_tab = $(data).find("h1.h3.product-title.mb-2");
             var product_title_1 = $(product_title_tab).find("strong").text();
             product_title = product_title_1.replace(/\,/g,";");
@@ -126,8 +121,8 @@ console.log(buttonId);
             var warranty_options = w_options.replace(/[,']/g,'');;
 
             var desc_section = $(data).find("#nav-home").html();
-            var descript = desc_section.substr(0, desc_section.indexOf('var wcCpi'));
-            var descript = desc_section.substr(0, descript.indexOf('<script>'));
+            var descript = 'okk';//desc_section.substr(0, desc_section.indexOf('var wcCpi'));
+            var descript = 'okk'; //desc_section.substr(0, descript.indexOf('<script>'));
             description = descript.replace(/\,/g,";");
             var desc_text = $(description).text();
             desc_text = desc_text.replace(/[^a-z0-9\s]/gi, '');
@@ -179,9 +174,6 @@ console.log(buttonId);
 
     // end
     function importdata(event) {
-
-        console.log("Here");
-
         document.getElementById("loader").style.display = "block";
         var amazon_bulk_array = [];
         var amazon_array = {};
