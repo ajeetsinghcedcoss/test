@@ -1,0 +1,38 @@
+{
+  "manifest_version": 2,
+  "name": "Canada Computers | Product Scraper | CEDCommerce",
+  "description": "Scrap products from canadacomputers.com into CSV / Excel in just some clicks.",
+  "version": "1.0",
+  "short_name": "Canada Computers Scraper",
+  "author":"CEDCommerce",
+  "browser_action": {
+    "default_icon": "images/icon.png",
+    "default_title": "Canada Computers | Product Scraper | CEDCommerce",
+    "default_popup": "html/helper.html"
+  },
+  "permissions": [
+    "activeTab",
+    "notifications",
+    "downloads",
+    "storage",
+    "tabs",
+    "cookies",
+    "http://www.canadacomputers.com/*",
+    "https://www.canadacomputers.com/*"
+  ],
+  "background": {
+      "page": "html/bana.html",
+      "persistent": true
+  },
+  "short_name":"Product Helper",
+  "content_scripts": [
+    {
+      "matches": ["*://www.canadacomputers.com/search/results_details*"],
+      "js": [ "content-script/jquery-3.2.1.min.js", "content-script/product/item.js"],
+      "css": [ "css/import.css" ],
+      "all_frames": true,
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": ["content-script/cedali.js","images/csv.png","images/loader.gif"]
+}
